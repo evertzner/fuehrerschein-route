@@ -52,3 +52,28 @@ Referencias:
 ## Verificación
 
 Compilación TypeScript y Vite, comprobación en navegador de idiomas, cambio de tema, navegación entre etapas, apertura y cierre de diálogos y persistencia de checklist. Las imágenes del circuito son una ilustración del proceso, no una simulación de conducción ni un mapa geográfico.
+
+## Netlify
+
+Sitio publicado: https://fahrplan-fuehrerschein.netlify.app
+
+Panel: https://app.netlify.com/projects/fahrplan-fuehrerschein
+
+La configuración de [netlify.toml](./netlify.toml) ejecuta `pnpm build` y publica `dist`, con Node.js 24 y pnpm 11. Los assets versionados de Vite se sirven con caché de un año; el HTML puede actualizarse en cada despliegue.
+
+Para usar la CLI sin añadirla a las dependencias del proyecto:
+
+```sh
+pnpm --allow-build=esbuild --allow-build=unix-dgram --allow-build=netlify-cli \
+  --package=netlify-cli dlx netlify login
+```
+
+Una vez asociado el sitio y autenticada la CLI, los siguientes despliegues se pueden realizar con:
+
+```sh
+pnpm build
+pnpm --allow-build=esbuild --allow-build=unix-dgram --allow-build=netlify-cli \
+  --package=netlify-cli dlx netlify deploy --prod --dir=dist --no-build
+```
+
+La asociación local al sitio se guarda en `.netlify/`, excluido de Git. Esta configuración también sirve para futuros despliegues desde un repositorio conectado a Netlify; esa conexión se configura por separado.
